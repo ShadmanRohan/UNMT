@@ -45,7 +45,11 @@ class BatchTransformer:
         new_variable = new_variable[:max(new_lengths), :]
         assert new_variable.size(1) == batch_size
         return Batch(new_variable, new_lengths)
-
+"""
+-> is the return type of a function; not strictly enforced in python
+: next to the parameter describes the datatype
+Desc- Takes in "variable", adds noise to it and then returns it
+"""
     @staticmethod
     def add_noise(variable: Variable, pad_index: int, drop_probability: float=0.1,
                   shuffle_max_distance: int=3) -> Variable:
