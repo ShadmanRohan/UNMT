@@ -7,10 +7,12 @@ from typing import Callable, List
 
 import torch
 from torch.autograd import Variable
-
 from src.batch import Batch
 
-
+######################################################################################################################################
+# 
+# 
+######################################################################################################################################
 class BatchTransformer:
     @staticmethod
     def noise(batch: Batch, pad_index: int, drop_probability: float=0.1,
@@ -21,7 +23,7 @@ class BatchTransformer:
         new_variable = new_variable[:, :max(new_lengths)]
         new_batch = Batch(new_variable.transpose(0, 1), new_lengths)
         return new_batch
-
+################################ Why translation Function is Callable ###############################
     @staticmethod
     def translate(batch: Batch, src_pad_index: int, tgt_pad_index: int, tgt_eos_index: int,
                   translation_func: Callable) -> Batch:
@@ -45,11 +47,12 @@ class BatchTransformer:
         new_variable = new_variable[:max(new_lengths), :]
         assert new_variable.size(1) == batch_size
         return Batch(new_variable, new_lengths)
-"""
--> is the return type of a function; not strictly enforced in python
-: next to the parameter describes the datatype
-Desc- Takes in "variable", adds noise to it and then returns it
-"""
+
+######################################################################################################################################
+# This Function takes in "variable", adds noise to it and then returns it
+# Used by the Batch-Transformer
+######################################################################################################################################
+
     @staticmethod
     def add_noise(variable: Variable, pad_index: int, drop_probability: float=0.1,
                   shuffle_max_distance: int=3) -> Variable:
