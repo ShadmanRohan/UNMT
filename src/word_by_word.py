@@ -11,8 +11,10 @@ from utils.vocabulary import Vocabulary
 from src.translator import TranslationModel
 from collections import defaultdict
 import random
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Send: src_to_tgt_dict_filename, tgt_to_src_dict_filename: str, all_vocabulary: Vocabulary, max_length: int  ==> Initiate class
 
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 class WordByWordModel(TranslationModel):
     def __init__(self, src_to_tgt_dict_filename: str, tgt_to_src_dict_filename: str,
                  all_vocabulary: Vocabulary, max_length: int):
@@ -20,7 +22,10 @@ class WordByWordModel(TranslationModel):
         self.src_to_tgt_dict_filename, self.tgt_to_src_dict_filename = \
             src_to_tgt_dict_filename, tgt_to_src_dict_filename
         self.all_vocabulary = all_vocabulary
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Send src_to_tgt_dict_filename, tgt_to_src_dict_filename, all_vocabulary and two strings ==> Parameters to init_mapping()
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
         self.src2tgt = self.init_mapping(src_to_tgt_dict_filename, self.all_vocabulary, "src", "tgt")
         self.src2tgt[self.all_vocabulary.get_pad("src")] = {self.all_vocabulary.get_pad("tgt")}
         self.src2tgt[self.all_vocabulary.get_eos("src")] = {self.all_vocabulary.get_eos("tgt")}
