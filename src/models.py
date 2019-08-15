@@ -17,7 +17,9 @@ from utils.vocabulary import Vocabulary
 
 logger = logging.getLogger("unmt")
 
-
+######################################################################################################################################
+# Encoder Model => Used by Seq2Seq
+######################################################################################################################################
 class EncoderRNN(nn.Module):
     def __init__(self, input_size, embedding_dim, hidden_size, n_layers=3, dropout=0.3, bidirectional=True):
         super(EncoderRNN, self).__init__()
@@ -49,6 +51,9 @@ class EncoderRNN(nn.Module):
                       torch.cat([hidden[1][0:n:2], hidden[1][1:n:2]], 2))
         return outputs, hidden
 
+######################################################################################################################################
+# Generator Model => Used by Seq2Seq
+######################################################################################################################################
 
 class Generator(nn.Module):
     def __init__(self, hidden_size, output_size):
@@ -64,7 +69,9 @@ class Generator(nn.Module):
         assert inputs.size(1) == self.hidden_size
         return self.sm(self.out(inputs))
 
-
+######################################################################################################################################
+# Decoder Model => Used by Seq2Seq
+######################################################################################################################################
 class DecoderRNN(nn.Module):
     def __init__(self, embedding_dim, hidden_size, output_size, max_length, n_layers=3, 
                  dropout=0.3, use_cuda=False, use_attention=True):
@@ -134,7 +141,9 @@ class DecoderRNN(nn.Module):
                 current_input = gtruth[t]
         return outputs, hidden
 
-
+######################################################################################################################################
+# Discriminator Model
+######################################################################################################################################
 class Discriminator(nn.Module):
     def __init__(self, max_length, encoder_hidden_size, hidden_size, n_layers):
         super(Discriminator, self).__init__()
@@ -164,7 +173,9 @@ class Discriminator(nn.Module):
             output = self.layers[i](output)
         return self.sigmoid(self.out(output))
 
-
+######################################################################################################################################
+# Encoder Decoder Model
+######################################################################################################################################
 class Seq2Seq(nn.Module):
     def __init__(self, embedding_dim, rnn_size, output_size, encoder_n_layers, decoder_n_layers, dropout,
                  max_length, use_cuda, enable_embedding_training, bidirectional, use_attention=True):
@@ -227,7 +238,9 @@ class Seq2Seq(nn.Module):
 
         return encoder_output, decoder_output
 
-
+######################################################################################################################################
+# Build Model and Discriminator in a Functional Way
+######################################################################################################################################
 def build_model(*, rnn_size, output_size, encoder_n_layers, decoder_n_layers, discriminator_hidden_size, dropout,
                 max_length, use_cuda, enable_embedding_training, use_attention, bidirectional):
     logger.info("Building model...")
@@ -248,11 +261,14 @@ def build_model(*, rnn_size, output_size, encoder_n_layers, decoder_n_layers, di
                                   n_layers=3)
     return model, discriminator
 
-
+######################################################################################################################################
+# Take SRC and TRG embedding filename.... Load Vectors from the file and send them all to MODEL.loadembeddings(src, tgt, vocab)
+######################################################################################################################################
 def load_embeddings(model, src_embeddings_filename, tgt_embeddings_filename, vocabulary):
     logger.info("Loading embeddings...")
     src_word_vectors = KeyedVectors.load_word2vec_format(src_embeddings_filename, binary=False)
     tgt_word_vectors = KeyedVectors.load_word2vec_format(tgt_embeddings_filename, binary=False)
+##### Calls the load_embeddings() method declared above ####    
     model.load_embeddings(src_word_vectors, tgt_word_vectors, vocabulary)
 
 
