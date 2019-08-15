@@ -11,9 +11,9 @@ from utils.vocabulary import Vocabulary
 from src.translator import TranslationModel
 from collections import defaultdict
 import random
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Send src_to_tgt_dict_filename, tgt_to_src_dict_filename: str, all_vocabulary: Vocabulary, max_length: int  ==> Initiate class
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+######################################################################################################################################
+#Send src_to_tgt_dict_filename, tgt_to_src_dict_filename: str, all_vocabulary: Vocabulary, max_length: int  ==> Initiate class
+######################################################################################################################################
 class WordByWordModel(TranslationModel):
     def __init__(self, src_to_tgt_dict_filename: str, tgt_to_src_dict_filename: str,
                  all_vocabulary: Vocabulary, max_length: int):
@@ -21,9 +21,10 @@ class WordByWordModel(TranslationModel):
         self.src_to_tgt_dict_filename, self.tgt_to_src_dict_filename = \
             src_to_tgt_dict_filename, tgt_to_src_dict_filename
         self.all_vocabulary = all_vocabulary
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Send src_to_tgt_dict_filename, tgt_to_src_dict_filename, all_vocabulary and two strings ==> Parameters to init_mapping()
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+######################################################################################################################################
+#Send src_to_tgt_dict_filename, tgt_to_src_dict_filename, all_vocabulary and two strings ==> Parameters to init_mapping()
+######################################################################################################################################
+
         self.src2tgt = self.init_mapping(src_to_tgt_dict_filename, self.all_vocabulary, "src", "tgt")
         self.src2tgt[self.all_vocabulary.get_pad("src")] = {self.all_vocabulary.get_pad("tgt")}
         self.src2tgt[self.all_vocabulary.get_eos("src")] = {self.all_vocabulary.get_eos("tgt")}
@@ -58,17 +59,17 @@ Send src_to_tgt_dict_filename, tgt_to_src_dict_filename, all_vocabulary and two 
                 mapping[first_index].add(second_index)
         return mapping
     
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Never Directly Called, Used by the method => translate_sentence
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+######################################################################################################################################
+#Never Directly Called, Used by the method => translate_sentence
+######################################################################################################################################
     def translate_to_tgt(self, variable: Variable, lengths: int):
         return self._map_variable(variable, self.src2tgt, "tgt")
 
     def translate_to_src(self, variable: Variable, lengths: int):
         return self._map_variable(variable, self.tgt2src, "src")
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Word by Word Translates a sentence into another Language
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+######################################################################################################################################
+#Word by Word Translates a sentence into another Language
+######################################################################################################################################
     def translate_sentence(self, sentence: str, from_lang: str, to_lang: str):
         indices = self.all_vocabulary.get_indices(sentence, from_lang)
         variable = self._indices_to_variable(indices)
@@ -89,9 +90,9 @@ Word by Word Translates a sentence into another Language
                 # else:
                 result.append(self.all_vocabulary.get_word(self.all_vocabulary.get_unk(to_lang)))
         return " ".join(result[:-1])
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Take a word and Conversion Dictionary and language......... return mapped word
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+######################################################################################################################################
+#Take a word and Conversion Dictionary and language......... return mapped word
+######################################################################################################################################
     def _map_variable(self, variable: Variable, mapping: Dict[int, Set[int]], lang):
         input_max_length = variable.size(0)
         batch_size = variable.size(1)
