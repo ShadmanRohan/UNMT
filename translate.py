@@ -68,6 +68,9 @@ def main():
             tgt_vocabulary_path=opt.tgt_vocabulary,
             all_vocabulary_path=opt.all_vocabulary, 
             reset=False)
+######################################################################################################################################
+# Read from input file, translate and write to output file
+######################################################################################################################################
     if opt.src_to_tgt_dict is not None and opt.tgt_to_src_dict is not None:
         translator = WordByWordModel(opt.src_to_tgt_dict, opt.tgt_to_src_dict, vocabulary, opt.max_length)
     else:
@@ -80,6 +83,7 @@ def main():
     logging.info("Writing output...")
     with open(input_filename, "r", encoding="utf-8") as r, open(output_filename, "w", encoding="utf-8") as w:
         for line in r:
+            #Each line is read, translated and written back to Output file
             translated = translator.translate_sentence(line, lang, tgt_lang)
             logging.debug(translated)
             w.write(translated+"\n")
