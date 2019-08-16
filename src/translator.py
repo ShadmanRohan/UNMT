@@ -25,7 +25,9 @@ class Translator(TranslationModel):
         self.model = model  # type: Seq2Seq
         self.vocabulary = vocabulary  # type: Vocabulary
         self.use_cuda = use_cuda
-
+######################################################################################################################################
+# Takes a sentence and translates is using the current model and return the translated sentence
+######################################################################################################################################
     def translate_sentence(self, sentence: str, from_lang: str, to_lang: str):
         variable, lengths = self.sentence_to_variable(sentence, from_lang)
         sos_index = self.vocabulary.get_sos(to_lang)
