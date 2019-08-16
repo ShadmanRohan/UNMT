@@ -9,7 +9,9 @@ from utils.vocabulary import collect_vocabularies
 from src.serialize import load_model
 from src.word_by_word import WordByWordModel
 
-
+######################################################################################################################################
+# ArgParse
+######################################################################################################################################
 def translate_opts(parser):
     group = parser.add_argument_group('Vocabulary')
     group.add_argument('-src_vocabulary', default="src.pickle",
@@ -62,7 +64,9 @@ def main():
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     use_cuda = torch.cuda.is_available()
     logging.info("Use CUDA: " + str(use_cuda))
-  
+######################################################################################################################################
+# Collect Vocabs from Opt
+######################################################################################################################################  
     _, _, vocabulary = collect_vocabularies(
             src_vocabulary_path=opt.src_vocabulary,
             tgt_vocabulary_path=opt.tgt_vocabulary,
@@ -70,6 +74,7 @@ def main():
             reset=False)
 ######################################################################################################################################
 # Read from input file, translate and write to output file
+# If SRS-TGT Dictionary not found then do direct Word to Word Translation
 ######################################################################################################################################
     if opt.src_to_tgt_dict is not None and opt.tgt_to_src_dict is not None:
         translator = WordByWordModel(opt.src_to_tgt_dict, opt.tgt_to_src_dict, vocabulary, opt.max_length)
@@ -83,7 +88,7 @@ def main():
     logging.info("Writing output...")
     with open(input_filename, "r", encoding="utf-8") as r, open(output_filename, "w", encoding="utf-8") as w:
         for line in r:
-            #Each line is read, translated and written back to Output file
+            ############ Each line is read, translated and written back to Output file ###############
             translated = translator.translate_sentence(line, lang, tgt_lang)
             logging.debug(translated)
             w.write(translated+"\n")
