@@ -45,7 +45,7 @@ class Vocabulary:
     def has_word(self, word, language) -> bool:
         word = language+"-"+word
         return word in self.word2index
-
+############ strip() split() removes certain character and splits string into character ##############
     def add_file(self, filename: str, language: str):
         with open(filename, "r", encoding="utf-8") as r:
             for line in r:
@@ -91,7 +91,7 @@ class Vocabulary:
     def save(self, path) -> None:
         with open(path, "wb") as f:
             pickle.dump(self, f, pickle.HIGHEST_PROTOCOL)
-
+############pickle.load() reads from the file##############
     def load(self, path):
         with open(path, "rb") as f:
             vocab = pickle.load(f)
