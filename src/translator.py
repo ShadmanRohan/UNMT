@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
-# Author: Ilya Gusev
-# Description: Translation model. Interchangeable with word-by-word model.
+######################################################################################################################################
+# ROUGHLY COMMENTED
+######################################################################################################################################
 
 import torch
 from torch.autograd import Variable
@@ -18,7 +18,9 @@ class TranslationModel:
 
     def translate_to_src(self, variable: Variable, lengths: int):
         raise NotImplementedError()
-
+######################################################################################################################################
+# Translator Object Contains the MODEL and VOCABULARY
+######################################################################################################################################
 
 class Translator(TranslationModel):
     def __init__(self, model: Seq2Seq, vocabulary: Vocabulary, use_cuda: bool):
@@ -33,7 +35,7 @@ class Translator(TranslationModel):
         sos_index = self.vocabulary.get_sos(to_lang)
 
         output_variable = self.translate(variable, lengths, sos_index)
-
+##################### Did not understand the purpose of line below #############################
         translated = list(output_variable[:, 0].cpu().data.numpy())
         words = []
         for i in translated:
