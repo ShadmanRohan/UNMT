@@ -67,6 +67,9 @@ class Batch:
 
 
 class BatchGenerator:
+    '''
+    Probably making segment according to sentence size
+    '''
     def __init__(self, file_names: List[str], num_words_in_batch: int, max_len: int,
                  vocabulary: Vocabulary, language: str, is_sorting=True, max_batch_count: int=None):
         self.file_names = file_names  # type: List[str]
