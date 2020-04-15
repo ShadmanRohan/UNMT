@@ -34,6 +34,9 @@ class Vocabulary:
             self.add_word(word, language)
 
     def add_word(self, word, language):
+        '''
+        Add word to a vocabulary
+        '''        
         word = language+"-"+word
         if word not in self.word2index:
             self.word2index[word] = len(self.index2word)
@@ -43,16 +46,25 @@ class Vocabulary:
             self.word2count[word] += 1
     
     def has_word(self, word, language) -> bool:
+        '''
+        Check for the presence of a word
+        '''
         word = language+"-"+word
         return word in self.word2index
 
     def add_file(self, filename: str, language: str):
+        '''
+        Build vocabulary from the file
+        '''
         with open(filename, "r", encoding="utf-8") as r:
             for line in r:
                 for word in line.strip().split():
                     self.add_word(word, language)
 
     def get_index(self, word, language):
+        '''
+        Returns the index of a word if present, else return the unk token of that particular language
+        '''        
         word = language + "-" + word
         if word in self.word2index:
             return self.word2index[word]
@@ -60,15 +72,24 @@ class Vocabulary:
             return self.get_unk(language)
 
     def get_word(self, index):
+        '''
+        Returns the word at an index
+        '''
         return self.index2word[index].split("-", maxsplit=1)[-1]
 
     def get_language(self, index):
+        '''
+        Returns the language at an index
+        '''
         return self.index2word[index].split("-", maxsplit=1)[0]
 
     def size(self):
         return len(self.index2word)
 
     def is_empty(self):
+        '''
+        bujhi nai
+        '''
         empty_size = len(self.languages) * 4
         return self.size() <= empty_size
 
