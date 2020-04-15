@@ -73,6 +73,9 @@ class Vocabulary:
         return self.size() <= empty_size
 
     def shrink(self, n):
+        '''
+        Keep only n most common words. Rest are deleted.
+        '''
         best_words = self.word2count.most_common(n)
         self.reset()
         for word, count in best_words:
@@ -81,6 +84,9 @@ class Vocabulary:
             self.word2count[word] = count
 
     def reset(self):
+        '''
+        Resets the Vocabulary Class and adds fours tokens- pad sos eos unk
+        '''
         self.word2count = Counter()
         self.index2word = []
         for language in self.languages:
@@ -105,6 +111,9 @@ class Vocabulary:
 
     @staticmethod
     def merge(vocab1, vocab2):
+        '''
+        Creates new vocab object from two input vocabs
+        '''
         vocabulary = Vocabulary(languages=vocab1.languages + vocab2.languages)
         for i in range(vocab1.size()):
             language = vocab1.get_language(i)
